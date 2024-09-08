@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Detail{% endblock title %}
+
+{% block containt %}
+
+     <!-- Blog Detail Start -->
+     <div class="container py-5 px-2 bg-white">
+        <div class="row px-4">
+            <div class="col-12">
+                <img class="img-fluid mb-4" src="{{article.image.url}}" alt="{{article.title}}">
+                <h2 class="mb-3 font-weight-bold">{{article.name}}</h2>
+                <div class="d-flex">
+                    <p class="mr-3 text-muted"><i class="fa fa-calendar-alt"></i>{{article.date|date}}</p>
+                    <p class="mr-3 text-muted"><i class="fa fa-folder"></i>
+           
+                    </p>
+                    <p class="mr-3 text-muted"><i class="fa fa-comments"></i> {{article.comment_set.count}} Commentaire</p>
+                </div>
+                <p>{{article.content|slice:':200'}}-</p>
+                <h3 class="mb-3 font-weight-bold">Categorie: {{article.category.first.name}}</h3>
+                <img class="w-50 float-left mr-4 mb-3" src="{{article.category.first.image.url}}" alt="Image">
+                <p>{{article.content|slice:'200:'}}.</p>
+            </div>
+            <div class="col-12 py-4">
+                <h4>Article liés</h4>
+                {% if related_articles %}                
+                    {% for ar in related_articles %}
+                        <a href="{% url 'detail-article' ar.pk %}" class="btn btn-sm btn-outline-primary mb-1">{{ar.title}}</a>      
+                    {% endfor %}
+
+                {% else %}
+
+                    <p class="alert alert-info">Accun autre article lié cet article</p>
+                {% endif %}
+
+            </div>
+            <div class="col-12 py-4">
+               <a class="btn btn-primary" href="{% url 'home' %}">Retour à l'Accueil</a>
+            </div>
+
+
+            <div class="col-12 py-4">
+                <h3 class="mb-4 font-weight-bold">{{article.comment_set.count}} Commentaires</h3>
+                
+              
+                {% for comment in comments %}
+                <div class="media mb-4">
+                    {# <img src="{% static 'blogApp/img/photo.jpg' %}" alt="Image" class="mr-3 mt-1 rounded-circle" style="width:60px;"> #}
+                    <div class="media-body">
+                       
+                        {% if request.user == comment.user %}
+                        <h4><span class="text-success"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                          </svg> You</span> post this at <small><i>{{comment.created_at}}</i></small></h4>
+                        {% else %}
+                        <h4><span class="text-success"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                          </svg> {{comment.user.username}}</span> post's this at <small><i>{{comment.created_at}}</i></small></h4>
+                        {% endif %}
+
+                        <p>{{comment.content}}</p>
+                        {# <button class="btn btn-sm btn-light">ReplyReply</button> #}
+                        {% if request.user == comment.user%}
+                        <a class="p-0 text-danger" href="{% url 'del-comment' comment.id%}">Supprimer<i class="fa-solid fa-trash fa-flip-horizontal" style="color: #e40707;"></i></a>
+                        <a class="p-0 text-success" href="{% url 'edit-comment' comment.id %}">modifier <i class="fa-solid fa-pen-to-square" style="color: #0a3e99;"></i></a>
+                        {% elif request.user.is_superuser %}
+                        <a class="p-0 text-danger" href="{% url 'del-comment' comment.id%}">Supprimer</a>
+                        {%endif%}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-12">
+                <h3 class="mb-4 font-weight-bold">Laissez un commentaire</h3>
+
+               {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_content">Comment</label>
+                        {{ comment_form.content }}  <!-- Affiche le champ 'content' -->
+                        {{ comment_form.content.errors }}  <!-- Affiche les erreurs associées au champ 'content' -->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Commenter</button>
+                </form>
+
+                {% else %}
+                    <h3 class="alert alert-warning">Only authenticated users can comment</h3>
+                {% endif %} 
+            </div>
+        </div>
+    </div>
+    <!-- Blog Detail End -->
+{% endblock containt %}

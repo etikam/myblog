@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}MyBlog{% endblock title %}
+
+{% block containt %}
+{% comment %} 
+          <h1>All Articles</h1>
+              
+              {% if messages %}
+                  {% for message in messages %}
+                          <h3 class="alert alert-{{message.tags}}">{{message}}</h3>
+                  {% endfor %}
+              {% endif %}
+              {# <a href="{% url 'add-article'%}" class="btn btn-outline-primary">Add Article</a>   #}
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add Article</button>
+
+              <div class="container">
+                <div class="row">
+                  {% if articles %}         
+                                  {% for article  in articles %}  
+                                  <div class="card col-4" style="width: 18rem;">
+                                    <img src="{{article.image.url}}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                      <h4 class="card-title">{{article.title}}</h4>
+                                      <h2>{{article.resume}}</h2>
+                                      <p class="card-text">{{article.content|slice:':100'}}...</p>
+                                      <a href="{% url 'edit-article' article.id %}" class="btn btn-primary">Edit</a>
+                                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-article-id="{{ article.id }}">
+                                        Delete
+                                    </button>
+                                    </div>
+                                  </div>
+
+                                  {% endfor %}
+                  {% else %}
+                      <h2 class="alert alert-info">No Article saved, please clic on the top button to registe the articles</h2>
+                  {% endif %}
+                </div>
+              </div>
+
+
+
+              <!-- FENETRE MODALES POUR AJOUT D'UN ARTICLE-->
+
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add new Article</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form  method="post" enctype="multipart/form-data" class="form border  border-4 p-4 rounded">
+                      {% csrf_token %}
+                      {{form.as_p}} 
+
+                      <div class="modal-footer d-flex justify-content-center align-items-center">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                          <button type="sumit" class="btn btn-primary">Save Article</button>
+                        </div>  
+                  </form>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- FENETRE MODALE POUR LA CONFIRMATION DE SUPPRESSION-->
+          <!-- Button trigger modal -->
+
+            
+            <!-- Modal -->
+            <!-- FENETRE MODALE POUR LA CONFIRMATION DE SUPPRESSION-->
+          <!-- Button trigger modal -->
+
+          <!-- Modal -->
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Deleting alert</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Do you really want to delete this article?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                  <form id="delete-form" method="post" action="">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger col-6 ml-2" style="text-decoration:none; font-size:20px">Yes, Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              var deleteModal = document.getElementById('staticBackdrop');
+              deleteModal.addEventListener('show.bs.modal', function (event) {
+                  var button = event.relatedTarget;
+                  var articleId = button.getAttribute('data-article-id');
+                  var deleteForm = deleteModal.querySelector('#delete-form');
+                  deleteForm.action = '{% url "del-article" 0 %}'.replace('0', articleId);
+              });
+          });
+          </script> {% endcomment %}
+          {% include "blogApp/_home_partials/carousel_section.html" %}
+          {% include "blogApp/_home_partials/bloglist_section.html" %}
+          {% include "blogApp/_home_partials/subscription_section.html" %}
+          {{ block.super }}
+          
+    
+        
+          
+{% endblock containt %}

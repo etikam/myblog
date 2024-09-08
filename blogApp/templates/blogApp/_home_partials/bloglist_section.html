@@ -1,0 +1,35 @@
+
+
+<!-- Blog List Start -->
+<div class="container bg-white pt-5">
+
+    {% if articles %}
+        {% for article in articles %}
+            <div class="row blog-item px-3 pb-5">
+                <div class="col-md-5">
+                    <img class="img-fluid mb-4 mb-md-0" src="{{article.image.url}}" alt="{{article.title}}">
+                </div>
+                <div class="col-md-7">
+                    <h3 class="mt-md-4 px-md-3 mb-2 py-2 bg-white font-weight-bold">{{article.title}}</h3>
+                    <div class="d-flex mb-3">
+                        <small class="mr-2 text-muted"><i class="fa fa-calendar-alt"></i>{{article.date}}</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-folder"></i> {{article.category.fist.name}}</small>
+                        <small class="mr-2 text-muted"><i class="fa fa-comments"></i> {{article.comment_set.count}} commentaires</small>
+                    </div>
+                    <p>
+                       {{article.content|slice:':100'}}...
+                    </p>
+                    <a class="btn btn-link p-0" href="{% url 'detail-article' article.pk %}">Read More <i class="fa-solid fa-circle-chevron-down"></i></a>
+                    {% if article.user == request.user %}
+                        <a class="p-0 text-danger" href="{% url 'del-article' article.pk %}">Supprimer<i class="fa-solid fa-trash fa-flip-horizontal" style="color: #e40707;"></i></a>
+                        <a class="p-0 text-success" href="{% url 'edit-article' article.pk %}">modifier <i class="fa-solid fa-pen-to-square" style="color: #0a3e99;"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+  
+  
+</div>
+<!-- Blog List End -->

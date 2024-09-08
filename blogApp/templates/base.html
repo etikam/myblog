@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Les méta données-->  
+  {% block metadata %}
+      {% include "blogApp/_partials/metadata.html" %}
+  {% endblock  %}  
+  
+    <!-- Les liens css -->
+    {% block header_style %}
+        {% include "blogApp/_partials/header_link.html" %}
+    {% endblock header_style %}
+
+    <!-- Le titre de la page-->
+    <title>{% block title %}
+          
+    {% endblock title %}</title>
+</head>
+<body >
+  <div class="wrapper">
+        {% include "blogApp/_partials/sidebar.html" %}
+      <!-- La barre de navigation-->
+      <div class="content">
+        {% block navbar %}
+          {% include "blogApp/_partials/navbar.html" %}
+        {% endblock navbar %}
+          
+          <!-- Le contenu de la page-->
+          {% if messages %}
+    <div class="container">
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+        {% block containt %}
+          
+          
+          {% include "blogApp/_partials/footerbar.html" %}
+        {% endblock containt %}
+
+
+          <!-- La footer Barre-->
+       
+
+          <!-- Lien des Script javaScript-->
+          {% block footer_script %}
+          <script src='{% static "blogApp/bootstrap/bootstrap.bundle.js"%}'></script>
+          
+          {% endblock  %}
+      </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block containt %}
+    <div class="row mt-5">
+        <form method="post" action="{% url 'del-article' article.pk %}">
+            {% csrf_token %}
+            <div class="alert alert-danger">
+            <div>
+              <h3>  Attention, Vous êtes sur le point de supprimer cet Article, Voulez-vous vraiment Poursuivre?</h3>
+            </div>
+            <div class="row">
+                <input type="submit" value="Supprimer" class="btn btn-danger m-3">
+                <a href="{% url 'home'%}" class="btn btn-primary m-3">Annuler</a> 
+        </div> 
+        </div>              
+        </form>
+    </div>
+{% endblock  %}

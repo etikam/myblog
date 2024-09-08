@@ -1,0 +1,30 @@
+{% load static %}
+
+<!-- Carousel Start -->
+<div class="container p-0">
+    <div id="blog-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for category in categories %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img  class="w-100" src="{{ category.image.url }}" alt="{{ category.name }}" style="height: 250px; object-fit: cover;">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <h2 class="mb-3 text-white font-weight-bold">{{ category.name }}</h2>
+                    <div class="d-flex text-white">
+                        <small class="mr-2"><i class="fa fa-calendar-alt"></i> {{ category.created_at|date:"d-M-Y" }}</small>
+                        
+                        <small class="mr-2"><i class="fa fa-comments"></i> {{ category.article_set.count }} articles</small>
+                    </div>
+                    <a href="{{ category.get_absolute_url }}" class="btn btn-lg btn-outline-light mt-4">Découvrir</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#blog-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#blog-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+<!-- Carousel End -->

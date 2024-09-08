@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Article
+{% endblock %}
+
+{% block containt %}
+             
+       
+    <div class="card">
+        <h5 class="card-header">Formulaire Article</h5>
+        <div class="card-body">
+            <h5 class="card-title">Ajouter ou Modifier Un article</h5>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro eaque praesentium, accusantium voluptate tempore dicta? Magni iste voluptatibus veniam recusandae nisi vitae aperiam autem quas omnis, eligendi, debitis aspernatur totam.

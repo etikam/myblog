@@ -1,0 +1,72 @@
+<div class="container p-0">
+    <nav class="navbar navbar-expand-lg bg-secondary navbar-dark">
+        <a href="#" class="navbar-brand d-block d-lg-none">Navigation</a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav m-auto">
+                <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
+                {% if user.is_authenticated %}
+                    {% if user.is_writer or user.is_superuser %}
+                        <a href="{% url 'article-create' %}" class="nav-item nav-link">Nouvel Article</a>
+                    {% endif %}
+                    <a href="{% url 'account:logout' %}" class="nav-item nav-link text-danger">Déconnexion</a> 
+
+                   
+                   
+                    <button type="button" class="nav-item nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"> <i class="fas fa-user"></i> {{ user.username }}</button>
+                {% else %}
+                    <a href="{% url 'account:login' %}" class="nav-item nav-link">Connexion</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Mon Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Nom d'Utilisateur:</label>
+            <input type="text" class="form-control" id="recipient-name" value="{{user.username}}">
+          </div>
+
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Nom:</label>
+            <input type="text" class="form-control" id="recipient-name" value="{{user.last_name}}">
+          </div>
+
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Prenom:</label>
+            <input type="text" class="form-control" id="recipient-name" value="{{user.first_name}}">
+          </div>
+
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Editeur:</label>
+            <input type="text" class="form-control" id="recipient-name" value="{{user.is_writer}}">
+          </div>
+
+         
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Quitter</button>
+        <button type="button" class="btn btn-primary">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
